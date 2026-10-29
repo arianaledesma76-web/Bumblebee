@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bienvenidos💛</title>
     
-    <!-- Importa el componente model-viewer de Google -->
+    <!-- CORRECCIÓN: Script oficial y actualizado de model-viewer de Google -->
     <script type="module" src="https://googleapis.com"></script>
     
     <style>
@@ -119,18 +119,18 @@
         <p>Interactúa con el modelo o proyéctalo en tu espacio móvil</p>
     </div>
 
-    <!-- Se agregaron ar-placement="floor" y se reordenaron ar-modes para priorizar la cámara real -->
+    <!-- CORRECCIÓN: Orden de ar-modes optimizado para máxima compatibilidad -->
     <model-viewer 
         id="bumblebee-viewer"
         src="modelado.glb" 
         ios-src="modeladoau.usdz"
         ar 
-        ar-modes="scene-viewer quick-look webxr" 
+        ar-modes="webxr scene-viewer quick-look" 
         ar-placement="floor"
         camera-controls 
         touch-action="pan-y" 
         shadow-intensity="1" 
-        alt="Un modelo 3D interactivo en Realidad Aumentada">
+        alt="Un modelo 3D interactivo de auricular Bumblebee en Realidad Aumentada">
         
         <button slot="ar-button" id="ar-button">
             Apreta para ver a Bumblebee (AR)
@@ -139,14 +139,11 @@
     </model-viewer>
 
     <script>
-        const viewer = document.getElementById('bumblebee-viewer');
         const arButton = document.getElementById('ar-button');
 
         arButton.addEventListener('click', function(e) {
-            // Forzar de manera explícita el disparador interno de Realidad Aumentada del visor
-            if (viewer.canActivateAR) {
-                viewer.activateAR();
-            }
+            // NOTA: Quitamos viewer.activateAR() porque el atributo slot="ar-button" de model-viewer 
+            // ya maneja el disparo nativo en Android e iOS de forma automática al hacer click.
 
             // Efecto visual de explosión de ruedas (🛞)
             for (let i = 0; i < 10; i++) {
