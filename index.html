@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenidos💛</title>
+    
+    <!-- Importa el componente model-viewer de Google -->
+    <script type="module" src="https://googleapis.com"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            background-color: #645e3b; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Capa exclusiva para la imagen de fondo con opacidad media */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('descarga (3).jpeg'); 
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0.5; 
+            z-index: 0; 
+         }
+
+        /* Contenedor del Saludo/Título visible en pantalla */
+        .welcome-container {
+            position: absolute;
+            top: 40px; 
+            text-align: center;
+            width: 100%;
+            z-index: 3; 
+            pointer-events: none; 
+        }
+
+        .welcome-container h1 {
+            font-size: 2.5rem;
+            color: #fbe04a; 
+            margin: 0;
+            font-weight: bold;
+            text-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .welcome-container p {
+            font-size: 1.1rem;
+            color: #fbe04a; 
+            margin: 5px 0 0 0;
+            opacity: 0.9; 
+            text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            --poster-color: transparent;
+            position: relative;
+            z-index: 1; 
+        }
+
+        /* Estilo personalizado para el botón de Realidad Aumentada */
+        #ar-button {
+            background-color: #ffffff;
+            border-radius: 4px;
+            border: none;
+            position: absolute;
+            bottom: 32px;
+            right: 32px;
+            padding: 12px 24px;
+            font-size: 16px;
+            color: #645e3b; 
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            z-index: 4; 
+            user-select: none;
+            font-weight: bold;
+        }
+
+        /* Estilo para las partículas de ruedas animadas */
+        .wheel-particle {
+            position: fixed;
+            pointer-events: none;
+            font-size: 24px;
+            z-index: 9999;
+            animation: flyParticle 1s ease-out forwards;
+        }
+
+        @keyframes flyParticle {
+            0% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--x), var(--y)) scale(0.5) rotate(var(--r));
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="welcome-container">
+        <h1>Bienvenidos💛</h1>
+        <p>Interactúa con el modelo o proyéctalo en tu espacio móvil</p>
+    </div>
+
+    <!-- Se agregaron ar-placement="floor" y se reordenaron ar-modes para priorizar la cámara real -->
+    <model-viewer 
+        id="bumblebee-viewer"
+        src="modelado.glb" 
+        ios-src="modeladoau.usdz"
+        ar 
+        ar-modes="scene-viewer quick-look webxr" 
+        ar-placement="floor"
+        camera-controls 
+        touch-action="pan-y" 
+        shadow-intensity="1" 
+        alt="Un modelo 3D interactivo en Realidad Aumentada">
+        
+        <button slot="ar-button" id="ar-button">
+            Apreta para ver a Bumblebee (AR)
+        </button>
+        
+    </model-viewer>
+
+    <script>
+        const viewer = document.getElementById('bumblebee-viewer');
+        const arButton = document.getElementById('ar-button');
+
+        arButton.addEventListener('click', function(e) {
+            // Forzar de manera explícita el disparador interno de Realidad Aumentada del visor
+            if (viewer.canActivateAR) {
+                viewer.activateAR();
+            }
+
+            // Efecto visual de explosión de ruedas (🛞)
+            for (let i = 0; i < 10; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'wheel-particle';
+                particle.innerText = '🛞';
+                
+                particle.style.left = e.clientX + 'px';
+                particle.style.top = e.clientY + 'px';
+                
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 120 + 40; 
+                const x = Math.cos(angle) * velocity + 'px';
+                const y = Math.sin(angle) * velocity + 'px';
+                const rotation = (Math.random() * 360) + 'deg';
+                
+                particle.style.setProperty('--x', x);
+                particle.style.setProperty('--y', y);
+                particle.style.setProperty('--r', rotation);
+                
+                document.body.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                }, 1000);
+            }
+        });
+    </script>
+
+</body>
+</html>
