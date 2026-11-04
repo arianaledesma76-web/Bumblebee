@@ -2,45 +2,48 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#645e3b">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Bienvenidos 💛</title>
-
-    <!-- Librería oficial de model-viewer -->
-    <script
-        type="module"
-        src="[ajax.googleapis.com](https://ajax.googleapis.com/ajax/libs/model-viewer/4.1.0/model-viewer.min.js)">
+    <!-- Librería oficial model-viewer -->
+    <script type="module"
+        src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.1.0/model-viewer.min.js">
     </script>
-
     <style>
         * {
             box-sizing: border-box;
         }
-
-        body {
+        html, body {
             margin: 0;
-            min-height: 100vh;
+            width: 100%;
+            height: 100%;
             overflow: hidden;
+        }
+        body {
+            min-height: 100vh;
+            min-height: 100dvh;
             position: relative;
-            font-family: sans-serif;
+            font-family: Arial, sans-serif;
             background-color: #645e3b;
         }
-
         body::before {
             content: "";
             position: absolute;
             inset: 0;
-            background-image: url("descarga (3).jpeg");
+            background-image: url("descarga%20(3).jpeg");
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
             opacity: 0.5;
             z-index: 0;
+            pointer-events: none;
         }
-
         .welcome-container {
             position: absolute;
-            top: 40px;
+            top: calc(40px + env(safe-area-inset-top));
             left: 0;
             width: 100%;
             padding: 0 20px;
@@ -48,23 +51,20 @@
             pointer-events: none;
             z-index: 3;
         }
-
         .welcome-container h1 {
             margin: 0;
             color: #fbe04a;
-            font-size: 2.5rem;
+            font-size: clamp(1.8rem, 6vw, 2.5rem);
             font-weight: bold;
-            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 4px 8px rgba(0,0,0,0.5);
         }
-
         .welcome-container p {
-            margin: 5px 0 0;
+            margin: 8px 0 0;
             color: #fbe04a;
-            font-size: 1.1rem;
+            font-size: clamp(0.9rem, 3.5vw, 1.1rem);
             opacity: 0.9;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
-
         model-viewer {
             position: absolute;
             inset: 0;
@@ -73,42 +73,39 @@
             background-color: transparent;
             --poster-color: transparent;
             z-index: 1;
+            touch-action: pan-y;
         }
-
         #ar-button {
             position: absolute;
             right: 32px;
-            bottom: 32px;
+            bottom: calc(32px + env(safe-area-inset-bottom));
             z-index: 4;
-            padding: 12px 24px;
+            padding: 14px 24px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             background-color: #ffffff;
             color: #645e3b;
             font-size: 16px;
             font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             cursor: pointer;
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
-
-        #ar-button:disabled {
-            cursor: not-allowed;
-            opacity: 0.6;
+        #ar-button:active {
+            transform: scale(0.97);
         }
-
         #ar-message {
             position: absolute;
-            right: 32px;
-            bottom: 90px;
+            right: 20px;
+            bottom: calc(90px + env(safe-area-inset-bottom));
+            left: 20px;
             z-index: 4;
-            max-width: 280px;
             margin: 0;
             color: white;
-            text-align: right;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+            text-align: center;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
-
         .wheel-particle {
             position: fixed;
             z-index: 9999;
@@ -116,55 +113,54 @@
             font-size: 24px;
             animation: flyParticle 1s ease-out forwards;
         }
-
         @keyframes flyParticle {
             from {
                 opacity: 1;
-                transform: translate(0, 0) scale(1) rotate(0deg);
+                transform: translate(0,0) scale(1) rotate(0deg);
             }
-
             to {
                 opacity: 0;
                 transform:
-                    translate(var(--x), var(--y))
+                    translate(var(--x),var(--y))
                     scale(0.5)
                     rotate(var(--r));
             }
         }
-
         @media (max-width: 600px) {
-            .welcome-container h1 {
-                font-size: 2rem;
+            .welcome-container {
+                top: calc(30px + env(safe-area-inset-top));
             }
-
             #ar-button {
                 right: 20px;
-                bottom: 24px;
+                bottom: calc(24px + env(safe-area-inset-bottom));
                 left: 20px;
                 width: calc(100% - 40px);
+                padding: 15px 12px;
+                font-size: 15px;
             }
-
             #ar-message {
-                right: 20px;
-                bottom: 85px;
-                left: 20px;
-                max-width: none;
-                text-align: center;
+                bottom: calc(85px + env(safe-area-inset-bottom));
+            }
+        }
+        @media (max-height: 500px) {
+            .welcome-container {
+                top: 10px;
+            }
+            .welcome-container h1 {
+                font-size: 1.6rem;
             }
         }
     </style>
 </head>
-
 <body>
     <div class="welcome-container">
         <h1>Bienvenidos 💛</h1>
         <p>Interactúa con el modelo o proyéctalo en tu espacio móvil</p>
     </div>
-
     <model-viewer
         id="bumblebee-viewer"
-        src="modelado.glb"
-        ios-src="modeladoau.usdz"
+        src="./modelado.glb"
+        ios-src="./modeladoau.usdz"
         alt="Modelo 3D interactivo de Bumblebee"
         ar
         ar-modes="webxr scene-viewer quick-look"
@@ -172,8 +168,8 @@
         camera-controls
         auto-rotate
         shadow-intensity="1"
-        touch-action="pan-y">
-
+        touch-action="pan-y"
+        interaction-prompt="auto">
         <button
             type="button"
             slot="ar-button"
@@ -181,92 +177,66 @@
             Apretá para ver a Bumblebee (AR)
         </button>
     </model-viewer>
-
     <p id="ar-message" hidden></p>
-
     <script>
         const viewer = document.getElementById("bumblebee-viewer");
         const arButton = document.getElementById("ar-button");
         const arMessage = document.getElementById("ar-message");
-
         function showMessage(message) {
             arMessage.textContent = message;
             arMessage.hidden = false;
         }
-
         function createWheelParticles(event) {
             const rect = arButton.getBoundingClientRect();
             const originX = event.clientX || rect.left + rect.width / 2;
             const originY = event.clientY || rect.top + rect.height / 2;
-
             for (let i = 0; i < 10; i++) {
                 const particle = document.createElement("div");
                 particle.className = "wheel-particle";
                 particle.textContent = "🛞";
                 particle.style.left = `${originX}px`;
                 particle.style.top = `${originY}px`;
-
                 const angle = Math.random() * Math.PI * 2;
                 const velocity = Math.random() * 120 + 40;
-
                 particle.style.setProperty(
                     "--x",
                     `${Math.cos(angle) * velocity}px`
                 );
-
                 particle.style.setProperty(
                     "--y",
                     `${Math.sin(angle) * velocity}px`
                 );
-
                 particle.style.setProperty(
                     "--r",
                     `${Math.random() * 360}deg`
                 );
-
                 document.body.appendChild(particle);
                 setTimeout(() => particle.remove(), 1000);
             }
         }
-
-        arButton.addEventListener("click", async (event) => {
+        // El botón integrado de model-viewer activa AR automáticamente.
+        // No se llama activateAR() manualmente para evitar una doble activación.
+        arButton.addEventListener("click", (event) => {
             createWheelParticles(event);
             arMessage.hidden = true;
-
-            try {
-                /*
-                 * El botón con slot="ar-button" normalmente activa AR
-                 * automáticamente. Este llamado explícito sirve también
-                 * cuando el comportamiento automático no se dispara.
-                 */
-                await viewer.activateAR();
-            } catch (error) {
-                console.error("No se pudo iniciar la realidad aumentada:", error);
-
-                showMessage(
-                    "No se pudo abrir la realidad aumentada. Usá un celular compatible y abrí la página mediante HTTPS."
-                );
-            }
         });
-
         viewer.addEventListener("load", () => {
             console.log("Modelo 3D cargado correctamente.");
         });
-
-        viewer.addEventListener("error", (event) => {
-            console.error("Error al cargar el modelo 3D:", event);
+        viewer.addEventListener("error", () => {
             showMessage(
-                "No se pudo cargar el modelo 3D. Revisá los archivos modelado.glb y modeladoau.usdz."
+                "No se pudo cargar el modelo 3D. Revisá que los archivos estén correctamente alojados."
             );
         });
-
         viewer.addEventListener("ar-status", (event) => {
             console.log("Estado de AR:", event.detail.status);
-
             if (event.detail.status === "failed") {
                 showMessage(
                     "La realidad aumentada no está disponible en este dispositivo o navegador."
                 );
+            }
+            if (event.detail.status === "not-presenting") {
+                arMessage.hidden = true;
             }
         });
     </script>
