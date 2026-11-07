@@ -152,18 +152,20 @@
         <p>Interactúa con el modelo o proyéctalo en tu espacio móvil</p>
     </div>
 
-    <model-viewer
+    <!-- MODEL-VIEWER ACTUALIZADO Y OPTIMIZADO -->
+    <model-viewer 
         id="bumblebee-viewer"
         alt="Modelo 3D interactivo de Bumblebee"
-        ar
-        ar-modes="scene-viewer webxr quick-look"
-        ar-placement="floor"
+        ar 
+        ar-modes="webxr scene-viewer quick-look" 
         ar-scale="auto"
-        camera-controls
+        ar-placement="floor"
+        camera-controls 
         auto-rotate
-        shadow-intensity="1"
+        shadow-intensity="1" 
         touch-action="pan-y"
         interaction-prompt="auto">
+        
         <button
             type="button"
             slot="ar-button"
@@ -218,7 +220,7 @@
             }
         }
 
-        // DISPARADOR DE EFECTO SIN BLOQUEAR LA ACCIÓN NATIVA DE MODEL-VIEWER
+        // DISPARADOR DE EFECTO CON { passive: true } PARA NO BLOQUEAR LA ACCIÓN NATIVA
         arButton.addEventListener("click", (event) => {
             createWheelParticles(event);
             arMessage.hidden = true;
